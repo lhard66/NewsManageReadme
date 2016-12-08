@@ -126,6 +126,7 @@ from adjustprice
 where 
 adjusttype=@adjusttype and 1=1 ";
 
+//此处为处理开始时间和结束时间
 param.Add(new SqlParameter("@adjusttype", adjustType));
 if (!string.IsNullOrEmpty(adjusttime))
 {
