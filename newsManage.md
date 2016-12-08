@@ -29,7 +29,7 @@ SqlParameter[] param = new SqlParameter[] {
     new SqlParameter("@range",adj.Range),//调价情况：调整幅度
     new SqlParameter("@adjust",adj.Adjust),//此处写死，为0
     new SqlParameter("@adjusttime",adj.AdjustTime),//调价时间
-    new SqlParameter("@addtime",adj.AddTime),//当时时间
+    new SqlParameter("@addtime",adj.AddTime),//当前时间
     new SqlParameter("@adjusttype",adj.AdjustType),//前台设置为0
     new SqlParameter("@addtax",adj.AddTax),//默认为空
     new SqlParameter("@includetax",adj.IncludeTax),//默认为空
@@ -107,4 +107,67 @@ else
     sb.Append("<td></td>");
     sb.Append("</tr>");
 }
+```
+
+#### 7.调价
+* 根据“钢厂(steelname)、品种(steeltype)、开始日期(adjusttime)、结束日期(endTime)、AdjustType(默认值为0)”，调取数据库数据。
+代码如下：
+```
+return AdjustPriceDAL.GetAdjustPriceDraw(steelname, steeltype, adjusttime, endTime, adjustType);
+```
+* DAL层SQL语句
+```
+string sql = "
+select 
+    id,steelname,steeltype,adjusttype,steelparam,quality,price,
+    weight,remark,range,adjust,adjusttime,addtime,address,temperature,
+    tolerance,addtax,includetax 
+from adjustprice 
+where 
+adjusttype=@adjusttype and 1=1 ";
+
+param.Add(new SqlParameter("@adjusttype", adjustType));
+if (!string.IsNullOrEmpty(adjusttime))
+{
+    sql += " and adjusttime>=@adjusttime ";
+    param.Add(new SqlParameter("@adjusttime", adjusttime));
+}
+if (!string.IsNullOrEmpty(endTime))
+{
+    sql += "  and  adjusttime<=@endtime";
+    param.Add(new SqlParameter("@endtime", endTime));
+}
+```
+查询数据库，返回的数据有：
+```
+IList<AdjustPrice> list = new List<AdjustPrice>();
+using (SqlDataReader reader = SqlHelper.ExecuteReader(ConnString.conn, CommandType.Text, sql, param.ToArray()))
+{
+    while (reader.Read())
+    {        
+        AdjustPrice ad = new AdjustPrice();
+        ad.AddTime = reader["addtime"].ToString();
+        ad.Adjust = Convert.ToInt32(reader["adjust"]);
+        ad.AdjustTime = reader["adjusttime"].ToString();
+        ad.ID = Convert.ToInt32(reader["id"]);
+        ad.Price = Convert.ToString(reader["price"]);
+        ad.Quality = Convert.ToString(reader["quality"]);
+        ad.Range = Convert.ToString(reader["range"]);
+        ad.Remark = reader["remark"].ToString();
+        ad.SteelName = reader["steelname"].ToString();
+        ad.SteelParam = reader["steelparam"].ToString();
+        ad.SteelType = reader["steeltype"].ToString();
+        ad.AdjustType = Convert.ToInt32(reader["adjusttype"]);
+        ad.Weight = Convert.ToString(reader["weight"]);
+        ad.Tolerance = reader["tolerance"].ToString();
+        ad.Address = reader["address"].ToString();
+        ad.Temperature = Convert.ToString(reader["temperature"]);
+        ad.AddTax = Convert.ToString(reader["addtax"]);
+        ad.IncludeTax = Convert.ToString(reader["includetax"]);
+
+        list.Add(ad);
+        
+    }
+}
+return list;
 ```
