@@ -140,6 +140,18 @@ using (SqlDataReader reader = SqlHelper.ExecuteReader(ConnString.conn, CommandTy
 return list;
 ```
 
+#### 3.调价新闻
+
+* 页面加载时查询数据库，是通过存储过程，传入的参数为：itemid
+页面加载时表现层调用代码：
+```
+DataSet ds = NewsCenter.BLL.News.GetAllNewsByPage(itemid, pagesize, page, ref count);//后三个参数，都为分页。
+```
+调用存储过程代码：
+```
+ds = NewsCenter.DBUtility.SqlHelper.ExecuteDataSet(ConnString.connReadonly, CommandType.StoredProcedure, "[dbo].[list_page]", parm);
+```
+
 #### 7.调价
 * 根据“钢厂(steelname)、品种(steeltype)、开始日期(adjusttime)、结束日期(endTime)、AdjustType(默认值为0)”，调取数据库数据。
 代码如下：
