@@ -61,7 +61,7 @@ SqlParameter[] param = new SqlParameter[] {
 return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnString.conn, CommandType.Text, sql, param));
 ```
 * 点击“调价品种”时会根据“钢厂、调价品种和调价时间”，查询数据库。
-* 其中“钢厂和调价品种”是在界面中通过Dom操作拿到，调价时间是后台两次查询数据库。*
+*其中“钢厂和调价品种”是在界面中通过Dom操作拿到，调价时间是后台两次查询数据库。*
 ```
 string sql = 
 "select 
