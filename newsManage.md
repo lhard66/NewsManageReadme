@@ -39,7 +39,7 @@ SqlParameter[] param = new SqlParameter[] {
 };
 return SqlHelper.ExecuteNonQuery(ConnString.conn, CommandType.Text, sql, param);
 ```
-* 高价品种。点击添加时，执行的sql内容：
+* 调价品种。点击添加时，执行的sql内容：
 ```
 string sql = 
 "insert into steeltypes
