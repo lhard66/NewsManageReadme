@@ -2,7 +2,7 @@
 
 #### 1.调价
 
-点击"添加并生成文本"按钮时执行的sql：
+* 点击"添加并生成文本"按钮时执行的sql：
 ```
 string sql = 
 "insert into adjustprice
@@ -39,7 +39,7 @@ SqlParameter[] param = new SqlParameter[] {
 };
 return SqlHelper.ExecuteNonQuery(ConnString.conn, CommandType.Text, sql, param);
 ```
-高价品种。点击添加时，执行的sql内容：
+* 高价品种。点击添加时，执行的sql内容：
 ```
 string sql = 
 "insert into steeltypes
@@ -60,8 +60,8 @@ SqlParameter[] param = new SqlParameter[] {
 };
 return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnString.conn, CommandType.Text, sql, param));
 ```
-点击“调价品种”时会根据“钢厂、调价品种和调价时间”，查询数据库。
-其中“钢厂和调价品种”是在界面中通过Dom操作拿到，调价时间是后台两次查询数据库。
+* 点击“调价品种”时会根据“钢厂、调价品种和调价时间”，查询数据库。
+* 其中“钢厂和调价品种”是在界面中通过Dom操作拿到，调价时间是后台两次查询数据库。*
 ```
 string sql = 
 "select 
