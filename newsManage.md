@@ -60,3 +60,51 @@ SqlParameter[] param = new SqlParameter[] {
 };
 return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnString.conn, CommandType.Text, sql, param));
 ```
+点击“调价品种”时会根据“钢厂、调价品种和调价时间”，查询数据库。
+其中“钢厂和调价品种”是在界面中通过Dom操作拿到，调价时间是后台两次查询数据库。
+```
+string sql = 
+"select 
+    id,steelname,steeltype,adjusttype,steelparam,
+    quality,price,weight,remark,range,adjust,adjusttime,
+    addtime 
+from adjustprice 
+where 
+    steelname=@steelname  
+and 
+    adjusttype=@adjusttype 
+and 
+    adjusttime=@adjusttime ";
+
+```
+拿到数据后，后台进行循环拼接字符串操作，后在前台显示。
+注：此写法会消耗大量后台资源，极不建议采用！
+```
+if (list.Count > 0)
+{
+    for (int i = 0; i < list.Count; i++)
+    {
+        sb.Append("<tr align='center' id='trAdjust" + (i + 1) + "'>");
+        sb.Append("<td>" + DropDown(typeArr, "" + list[i].SteelType + "") + "</td>");
+        sb.Append("<td><input type='text' value='" + list[i].Quality + "'/></td>");
+        sb.Append("<td><input type='text' value='" + list[i].SteelParam + "'/></td>");
+        sb.Append("<td><input type='text' value='" + list[i].Price + "' style='width:55px'  /></td>");
+        sb.Append("<td><input type='text'  value='" + list[i].Adjust + "' style='width:55px'  /></td>");
+        sb.Append("<td><input type='text' value='" + list[i].Remark + "'/></td>");
+        sb.Append("<td><a href='#' onclick='removeAdjust(" + (i + 1) + ")'>-</a></td>");
+        sb.Append("</tr>");
+    }
+}
+else
+{
+    sb.Append("<tr align='center' id='trAdjust1'>");
+    sb.Append("<td>" + DropDown(typeArr, "") + "</td>");
+    sb.Append("<td><input type='text' /></td>");
+    sb.Append("<td><input type='text' /></td>");
+    sb.Append("<td><input type='text'  style='width:55px'  /></td>");
+    sb.Append("<td><input type='text'   style='width:55px'  /></td>");
+    sb.Append("<td><input type='text' /></td>");
+    sb.Append("<td></td>");
+    sb.Append("</tr>");
+}
+```
