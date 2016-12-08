@@ -109,6 +109,37 @@ else
 }
 ```
 
+#### 2.调价列表
+* 页面加载时查询数据库SQL语句：
+*注：查询数据库时，只传入了一个参数：pid=0*
+
+```
+List<SteelType> list = new List<SteelType>();
+string sql = "
+select 
+    id,typename,showorder,status,pid,itemid 
+from steeltypes 
+where 
+    pid=@pid //默认写为：0
+order by id ";
+//以下代码是拿到数据后的赋值操作
+using (SqlDataReader reader = SqlHelper.ExecuteReader(ConnString.conn, CommandType.Text, sql, new SqlParameter("@pid", pid)))
+{
+    while (reader.Read())
+    {
+        SteelType st = new SteelType();
+        st.TypeName = reader["typename"].ToString();
+        st.ShowOrder = Convert.ToInt32(reader["showorder"]);
+        st.Status = Convert.ToInt32(reader["status"]);
+        st.Pid = Convert.ToInt32(reader["pid"]);
+        st.ItemID = reader["itemid"].ToString();
+        st.ID = Convert.ToInt32(reader["id"]);
+        list.Add(st);
+    }
+}
+return list;
+```
+
 #### 7.调价
 * 根据“钢厂(steelname)、品种(steeltype)、开始日期(adjusttime)、结束日期(endTime)、AdjustType(默认值为0)”，调取数据库数据。
 代码如下：
