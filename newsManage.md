@@ -152,13 +152,28 @@ DataSet ds = NewsCenter.BLL.News.GetAllNewsByPage(itemid, pagesize, page, ref co
 ds = NewsCenter.DBUtility.SqlHelper.ExecuteDataSet(ConnString.connReadonly, CommandType.StoredProcedure, "[dbo].[list_page]", parm);
 ```
 
-#### 3.钢厂名称
+#### 4.钢厂名称
 
 * 钢厂名称页面显示时，调用的数据如下：
 
 id | steelname | showorder | status
----|---
-ID|钢厂名|排序|状态
+---|---|---|---
+ID | 钢厂名 | 排序 | 状态
+
+#### 5.品种类别
+
+* 品种类别页面加载时，调用的数据如下：
+
+id | typename | showorder | status | pid | itemid 
+---|---|---|---|---|---
+ID | 钢厂名 | 排序 | 状态 | 父ID | 项目ID
+
+#### 6.数据导入
+
+* 点击“导入数据”时，插入到表中的数据：
+
+steelname|steeltype|steelparam|quality|price|weight|remark|range|adjust|adjusttime|addtime|adjusttype|addtax|includetax|address|temperature|tolerance
+---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---
 
 
 #### 7.调价
