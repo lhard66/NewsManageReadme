@@ -152,6 +152,15 @@ DataSet ds = NewsCenter.BLL.News.GetAllNewsByPage(itemid, pagesize, page, ref co
 ds = NewsCenter.DBUtility.SqlHelper.ExecuteDataSet(ConnString.connReadonly, CommandType.StoredProcedure, "[dbo].[list_page]", parm);
 ```
 
+#### 3.钢厂名称
+
+* 钢厂名称页面显示时，调用的数据如下：
+
+id | steelname | showorder | status
+---|---
+ID|钢厂名|排序|状态
+
+
 #### 7.调价
 * 根据“钢厂(steelname)、品种(steeltype)、开始日期(adjusttime)、结束日期(endTime)、AdjustType(默认值为0)”，调取数据库数据。
 代码如下：
